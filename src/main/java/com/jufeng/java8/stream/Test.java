@@ -1,8 +1,6 @@
 package com.jufeng.java8.stream;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +28,7 @@ public class Test {
         findfirst();
         gropuBy();
         groupStat();
+        mergeMap();
     }
 
 
@@ -138,5 +137,20 @@ public class Test {
         Stream.of(1, 2, 3, 4).collect(Collectors.groupingBy(x->x<=2,Collectors.counting())).forEach((k,v)->{
             System.out.println(k+ " : " +v);
         });
+    }
+
+    public static void mergeMap(){
+        Map<String,Integer> map=new HashMap<>();
+        map.put("A", 1000);
+        map.put("B", 2000);
+        map.put("C", 3000);
+        // add new key value ("A",99), if key "A" exist in map then do function  "(X,Y) -> (Y+X)" ,the function return value will replace the oldvalue.
+        Integer newValue1 = map.merge("c", 99, (X,Y) -> (Y+X)); // old+new 然后复制到value ，这里X相当于oldvalue
+        Integer newValue2 = map.merge("A", 888, (X,Y) -> Y);
+        // add new key value ("D",666), if key "D" not exist in map then insert the key value to map
+        Integer newValue3 = map.merge("D", 666, (X,Y) -> Y);
+        Integer newValue4 = map.merge(null, 777, (X,Y) -> Y);
+        Integer newValue5 = map.merge(null, 5555, (X,Y) -> Y);
+        map.forEach( (k,v)-> System.out.println(k + " - " +v) );
     }
 }
